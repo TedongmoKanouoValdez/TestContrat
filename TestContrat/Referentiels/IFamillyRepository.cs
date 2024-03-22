@@ -7,6 +7,7 @@ namespace TestContrat.Referentiels
     {
         Task<Familly> CreateAsync(Familly famillyModels);
         Task<List<Familly>> GetAllAsync();
+        Task<List<Familly>> GetByNameAsync(string name);
         Task<Familly> GetByIdAsync(int id);
         Task<Familly> DeleteAsync(int id);
 

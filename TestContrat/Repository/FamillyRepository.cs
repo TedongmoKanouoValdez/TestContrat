@@ -73,6 +73,7 @@ namespace TestContrat.Repository
                         while (await reader.ReadAsync())
                         {
                             var familly = new Familly();
+
                             familly.Id = reader.GetInt32(0);
                             familly.name = reader.GetString(1);
 
@@ -80,6 +81,35 @@ namespace TestContrat.Repository
                         }
                     }
                    
+                }
+            }
+            return famillies;
+        }
+
+        public async Task<List<Familly>> GetByNameAsync(string name)
+        {
+            var famillies = new List<Familly>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand("GetFamillyName", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Name", name);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var familly = new Familly();
+
+                            familly.Id = reader.GetInt32(0);
+                            familly.name = reader.GetString(1);
+
+                            famillies.Add(familly);
+                        }
+                    }
+
                 }
             }
             return famillies;

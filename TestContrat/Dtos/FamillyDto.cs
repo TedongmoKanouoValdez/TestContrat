@@ -1,4 +1,4 @@
-﻿namespace TestContrat.Models
+﻿namespace TestContrat.Dtos
 {
     public class FamillyDto
     {

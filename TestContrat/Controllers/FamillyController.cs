@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
+using TestContrat.Dtos;
 using TestContrat.Models;
 using TestContrat.Referentiels;
 
@@ -45,7 +46,7 @@ namespace TestContrat.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<IActionResult> GetFamilly()
         {
             if (!ModelState.IsValid)
@@ -64,6 +65,26 @@ namespace TestContrat.Controllers
                 return BadRequest(ModelState);
             }
             
+        }
+
+        [HttpGet("byName/{name}")]
+        public async Task<IActionResult> GetFamillyByName(string name)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var getResult = await _famillyRepository.GetByNameAsync(name);
+                return Ok(getResult);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Famille", "Une erreur s'est produite.");
+                return BadRequest(ModelState);
+            }
+
         }
 
         [HttpGet("{id}")]

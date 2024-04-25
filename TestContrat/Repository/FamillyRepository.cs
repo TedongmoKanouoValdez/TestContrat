@@ -14,12 +14,48 @@ namespace TestContrat.Repository
         {
           
         }
+        /* public async Task<Familly> CreateAsync(Familly famillyModels)
+         {
+             using (var connectionString = new SqlConnection(_connectionString))
+             {
+                 await connectionString.OpenAsync();
+
+                 using (var command = new SqlCommand("AddFamilly", connectionString))
+                 {
+                     command.CommandType = CommandType.StoredProcedure;
+                     command.Parameters.Add("@Name", SqlDbType.NVarChar, 50).Value = famillyModels.name;
+
+                     await command.ExecuteNonQueryAsync();
+                 }
+             }
+
+             return famillyModels;
+         }*/
+
+
         public async Task<Familly> CreateAsync(Familly famillyModels)
         {
             using (var connectionString = new SqlConnection(_connectionString))
             {
                 await connectionString.OpenAsync();
 
+                // Vérifier si le nom existe déjà
+                using (var checkCommand = new SqlCommand("SELECT COUNT(*) FROM Familly WHERE Name = @Name", connectionString))
+                {
+                    checkCommand.Parameters.AddWithValue("@Name", famillyModels.name);
+                    int existingCount = (int)await checkCommand.ExecuteScalarAsync();
+
+                    // Si le nom existe déjà, retourner null ou lancer une exception, selon votre logique d'application
+                    if (existingCount > 0)
+                    {
+                        // Nom déjà existant, vous pouvez lancer une exception ou retourner null, selon votre logique
+                        throw new InvalidOperationException("Le nom de la famille existe déjà.");
+                        // Ou
+                        // return null;
+                    }
+                }
+
+                // Création de la famille si le nom n'existe pas encore
                 using (var command = new SqlCommand("AddFamilly", connectionString))
                 {
                     command.CommandType = CommandType.StoredProcedure;
@@ -31,6 +67,7 @@ namespace TestContrat.Repository
 
             return famillyModels;
         }
+
 
 
 
@@ -57,6 +94,8 @@ namespace TestContrat.Repository
             return deleteFamilly;
 
         }
+
+
 
         public async Task<List<Familly>> GetAllAsync()
         {
@@ -160,8 +199,9 @@ namespace TestContrat.Repository
                     using (var command = new SqlCommand("UpdateFamilly", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("Name", famillyModels.name);
                         command.Parameters.AddWithValue("Id", id);
+                        command.Parameters.AddWithValue("Name", famillyModels.name);
+                       
 
                         await command.ExecuteNonQueryAsync();
                     }

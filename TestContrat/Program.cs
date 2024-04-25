@@ -13,6 +13,28 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<IFamillyRepository, FamillyRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IAdministrateurRepository, AdministrateurRepository>();
+
+/*builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin", builder =>
+    {
+        builder.WithOrigins("http://localhost:4200") // Spécifiez ici l'origine de votre application Angular
+               .AllowAnyHeader()
+               .WithMethods("GET");
+    });
+});*/
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin", builder =>
+    {
+        builder.WithOrigins("http://localhost:4200") // Spécifiez ici l'origine de votre application Angular
+               .AllowAnyHeader()
+               .AllowAnyMethod(); // Autoriser toutes les méthodes (GET, PUT, POST, DELETE)
+    });
+});
 
 var app = builder.Build();
 
@@ -24,6 +46,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowOrigin");
+
+app.UseCors(options =>
+{
+    options.AllowAnyOrigin();
+    options.AllowAnyMethod();
+    options.AllowAnyHeader();
+});
 
 app.UseAuthorization();
 

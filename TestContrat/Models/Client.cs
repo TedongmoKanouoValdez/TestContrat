@@ -3,8 +3,9 @@
     public class Client
     {
         public int Id_client { get; set; }
-        public string Business_area { get; set; }
-        public string Company_name { get; set; }
-        public string Parent_company_name { get; set; }
+        public string code_client { get; set; }
+        public string business_area { get; set; }
+        public string company_name { get; set; }
+        public string parent_company_name { get; set; }
     }
 }

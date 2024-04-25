@@ -46,9 +46,10 @@ namespace TestContrat.Controllers
             {
                 var client = new Client
                 {
-                    Business_area = clientDto.Business_area,
-                    Company_name = clientDto.Company_name,
-                    Parent_company_name = clientDto.Parent_company_name,
+                    code_client = clientDto.Code_client,
+                    business_area = clientDto.Business_area,
+                    company_name = clientDto.Company_name,
+                    parent_company_name = clientDto.Parent_company_name,
                 };
 
                 var createdClient = await _clientRepositoy.CreateClientAsync(client);
@@ -59,6 +60,69 @@ namespace TestContrat.Controllers
                 throw ex;        
                     
             }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetClientById(int id_client)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var resultById = await _clientRepositoy.GetClientByIdAsync(id_client);
+                return Ok(resultById);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAdmin(int id, ClientDto clientDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var client = new Client
+                {
+                    code_client = clientDto.Code_client,
+                    business_area = clientDto.Business_area,
+                    company_name = clientDto.Company_name,
+                    parent_company_name = clientDto.Parent_company_name,
+                };
+                var updateResult = await _clientRepositoy.UpdateClientAsync(id, client);
+                return Ok(updateResult);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteClient(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var deleteResult = await _clientRepositoy.DeleteClientASync(id);
+                return Ok(deleteResult);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
     }
 }

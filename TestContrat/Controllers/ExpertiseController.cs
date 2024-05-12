@@ -8,16 +8,17 @@ namespace TestContrat.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClientController: ControllerBase
+    public class ExpertiseController: ControllerBase
     {
-        private IClientRepository _clientRepositoy;
-        public ClientController(IClientRepository clientRepository)
+        private readonly IExpertiseRepository _expertiseRepository;
+
+        public ExpertiseController(IExpertiseRepository expertiseRepository)
         {
-            _clientRepositoy = clientRepository;
+            _expertiseRepository = expertiseRepository;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllClient()
+        public async Task<IActionResult> GetAllExpertise()
         {
             if (!ModelState.IsValid)
             {
@@ -26,8 +27,8 @@ namespace TestContrat.Controllers
 
             try
             {
-                var getAllClient = await _clientRepositoy.GetAllClientAsync();
-                return Ok(getAllClient);
+                var getAllExpertise = await _expertiseRepository.GetAllExpertiseAsync();
+                return Ok(getAllExpertise);
             }
             catch (Exception ex)
             {
@@ -36,7 +37,7 @@ namespace TestContrat.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateClient([FromBody] ClientDto clientDto)
+        public async Task<IActionResult> CreateExpertise([FromBody] ExpertiseDto expertiseDto)
         {
             if (!ModelState.IsValid)
             {
@@ -44,26 +45,23 @@ namespace TestContrat.Controllers
             }
             try
             {
-                var client = new Client
+                var expertise = new Expertise
                 {
-                    code_client = clientDto.Code_client,
-                    business_area = clientDto.Business_area,
-                    company_name = clientDto.Company_name,
-                    parent_company_name = clientDto.Parent_company_name,
+                    name_expertise = expertiseDto.name_expertise
                 };
 
-                var createdClient = await _clientRepositoy.CreateClientAsync(client);
-                return Ok(createdClient);
+                var createdExpertise = await _expertiseRepository.CreateExpertiseAsync(expertise);
+                return Ok(createdExpertise);
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
-                throw ex;        
-                    
+                throw ex;
+
             }
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetClientById(int id_client)
+        public async Task<IActionResult> GetExpertiseById(int id)
         {
             if (!ModelState.IsValid)
             {
@@ -72,7 +70,7 @@ namespace TestContrat.Controllers
 
             try
             {
-                var resultById = await _clientRepositoy.GetClientByIdAsync(id_client);
+                var resultById = await _expertiseRepository.GetExpertiseByIdAsync(id);
                 return Ok(resultById);
             }
             catch (Exception ex)
@@ -82,7 +80,7 @@ namespace TestContrat.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateClient(int id, ClientDto clientDto)
+        public async Task<IActionResult> UpdateExpertise(int id, ExpertiseDto expertiseDto)
         {
             if (!ModelState.IsValid)
             {
@@ -90,14 +88,11 @@ namespace TestContrat.Controllers
             }
             try
             {
-                var client = new Client
+                var expertise = new Expertise
                 {
-                    code_client = clientDto.Code_client,
-                    business_area = clientDto.Business_area,
-                    company_name = clientDto.Company_name,
-                    parent_company_name = clientDto.Parent_company_name,
+                    name_expertise = expertiseDto.name_expertise
                 };
-                var updateResult = await _clientRepositoy.UpdateClientAsync(id, client);
+                var updateResult = await _expertiseRepository.UpdateExpertiseAsync(id, expertise);
                 return Ok(updateResult);
             }
             catch (Exception ex)
@@ -107,7 +102,7 @@ namespace TestContrat.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteClient(int id)
+        public async Task<IActionResult> DeleteExpertise(int id)
         {
             if (!ModelState.IsValid)
             {
@@ -115,7 +110,7 @@ namespace TestContrat.Controllers
             }
             try
             {
-                var deleteResult = await _clientRepositoy.DeleteClientASync(id);
+                var deleteResult = await _expertiseRepository.DeleteExpertiseAsync(id);
                 return Ok(deleteResult);
             }
             catch (Exception ex)

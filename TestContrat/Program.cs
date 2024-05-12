@@ -14,6 +14,8 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IFamillyRepository, FamillyRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IAdministrateurRepository, AdministrateurRepository>();
+builder.Services.AddScoped<IExpertiseRepository, ExpertiseRepository>();
+builder.Services.AddScoped<IExpertRepository, ExpertRepository>();
 
 /*builder.Services.AddCors(options =>
 {

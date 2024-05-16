@@ -59,39 +59,73 @@ namespace TestContrat.Repository
             }
         }
 
-        public async Task<List<Expert>> GetAllExpertAsync()
+        /*  public async Task<List<Expert>> GetAllExpertAsync()
+          {
+              var experts = new List<Expert>();
+
+              using (var connection = new SqlConnection(_connectionString))
+              {
+                  await connection.OpenAsync();
+
+                  using (var command = new SqlCommand("GetAllExpert", connection))
+                  {
+                      command.CommandType = CommandType.StoredProcedure;
+
+                      using (var reader = await command.ExecuteReaderAsync())
+                      {
+                          while (await reader.ReadAsync())
+                          {
+                              var expert = new Expert();
+                              expert.Id_expert = reader.GetInt32(0);
+                              expert.name_expert = reader.GetString(1);
+                              expert.lastname = reader.GetString(2);
+                              expert.email = reader.GetString(3);
+                              expert.telephone = reader.GetString(4);
+                              expert.company = reader.GetString(5);
+                              expert.Id_expertise = reader.GetInt32(6);
+
+                              experts.Add(expert);
+                          }
+                      }
+                  }
+              }
+              return experts;
+          }
+  */
+
+        public async Task <List<Expert>> GetAllExpertAsync()
         {
-            var experts = new List<Expert>();
+            List<Expert> experts = new List<Expert>();
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
+                SqlCommand command = new SqlCommand("GetAllExpert", connection);
+                command.CommandType = CommandType.StoredProcedure;
 
-                using (var command = new SqlCommand("GetAllExpert", connection))
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    command.CommandType = CommandType.StoredProcedure;
+                    Expert expert = new Expert();
+                    expert.Id_expert = (int)reader["Id_expert"];
+                    expert.name_expert = reader["name_expert"].ToString();
+                    expert.lastname = reader["lastname"].ToString();
+                    expert.email = reader["email"].ToString();
+                    expert.telephone = reader["telephone"].ToString();
+                    expert.company = reader["company"].ToString();
+                    expert.Id_expertise = (int)reader["Id_expertise"];
+                    expert.expertise = reader["expertise"].ToString(); // Nom de l'expertise récupéré de la procédure stockée
 
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            var expert = new Expert();
-                            expert.Id_expert = reader.GetInt32(0);
-                            expert.name_expert = reader.GetString(1);
-                            expert.lastname = reader.GetString(2);
-                            expert.email = reader.GetString(3);
-                            expert.telephone = reader.GetString(4);
-                            expert.company = reader.GetString(5);
-                            expert.Id_expertise = reader.GetInt32(6);
-
-                            experts.Add(expert);
-                        }
-                    }
+                    experts.Add(expert);
                 }
+
+                reader.Close();
             }
+
             return experts;
         }
-
+/*
         public async Task<List<Expertise>> GetAllExpertisesAsync()
         {
             var expertises = new List<Expertise>();
@@ -118,7 +152,7 @@ namespace TestContrat.Repository
                 }
             }
             return expertises;
-        }
+        }*/
 
         public async Task<Expert> GetExpertByIdAsync(int Id_expert)
         {

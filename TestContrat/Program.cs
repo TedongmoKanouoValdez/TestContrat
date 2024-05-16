@@ -16,6 +16,7 @@ builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IAdministrateurRepository, AdministrateurRepository>();
 builder.Services.AddScoped<IExpertiseRepository, ExpertiseRepository>();
 builder.Services.AddScoped<IExpertRepository, ExpertRepository>();
+builder.Services.AddScoped<IDirecteurRepository, DirecteurRepository>();
 
 /*builder.Services.AddCors(options =>
 {

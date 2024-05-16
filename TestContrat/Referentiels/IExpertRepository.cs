@@ -9,6 +9,6 @@ namespace TestContrat.Referentiels
         Task<bool> DeleteExpertAsync(int Id_expert);
         Task<Expert> GetExpertByIdAsync(int Id_expert);
         Task<List<Expert>> GetAllExpertAsync();
-        Task<List<Expertise>> GetAllExpertisesAsync();
+        /*Task<List<Expertise>> GetAllExpertisesAsync();*/
     }
 }

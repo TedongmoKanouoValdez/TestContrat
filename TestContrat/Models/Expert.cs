@@ -23,7 +23,7 @@ namespace TestContrat.Models
         public int Id_expertise { get; set; }
         [Required]
         [MaxLength(100)]
-        public Expertise expertise { get; set; }
+        public string expertise { get; set; }
 
     }
 }
